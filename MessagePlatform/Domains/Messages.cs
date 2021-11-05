@@ -18,6 +18,7 @@ namespace MessagePlatform.Domains
             var messages = GetMessages(user);
             var message = new Message()
             {
+                // Id = Guid.NewGuid(),
                 User = user,
                 Content = content,
                 Date = DateTime.Now

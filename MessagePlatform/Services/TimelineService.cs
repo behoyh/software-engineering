@@ -15,7 +15,7 @@ namespace MessagePlatform.Services
             _messages = messages;
         }
 
-        public List<Message> GetTimeline(string user)
+        public List<Message> GetWall(string user)
         {
             var following = _following.GetFollowing(user);
 
@@ -39,6 +39,18 @@ namespace MessagePlatform.Services
             }
 
             return timeline.OrderByDescending(x=>x.Date).ToList();
+        }
+
+        public List<Message> GetTimeline(string user)
+        {
+            var messages = _messages.GetMessages(user);
+
+            if (messages == default)
+            {
+                return new List<Message>();
+            }
+
+            return messages.OrderByDescending(x => x.Date).ToList();
         }
     }
 }

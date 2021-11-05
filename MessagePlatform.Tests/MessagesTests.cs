@@ -1,5 +1,4 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using MessagePlatform.Domains;
 using Xunit;
 
@@ -13,26 +12,31 @@ namespace MessagePlatform.Tests
             _messages = GetService<Messages>();
         }
 
-        [Fact]
-        public void AddMessage_Success()
+        private void AddMessage(string user, string content)
         {
             var result = _messages.AddMessage("myUser", "Hello!");
             result.Should().BeTrue();
         }
 
         [Fact]
+        public void AddMessage_Success()
+        {
+            AddMessage("myUser", "Hello!");
+        }
+
+        [Fact]
         public void GetMessage_Success()
         {
-            AddMessage_Success();
+            AddMessage("myUser", "Hello!");
             var result = _messages.GetMessages("myUser");
             result.Should().NotBeEmpty();
         }
 
         [Fact]
-        public void GetMultipleFollowing_Success()
+        public void AddMultipleMessages_Success()
         {
-            AddMessage_Success();
-            AddMessage_Success();
+            AddMessage("myUser", "Hello!");
+            AddMessage("myUser", "Hello!");
             var result = _messages.GetMessages("myUser");
             result.Count.Should().Be(2);
         }

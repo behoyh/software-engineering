@@ -12,17 +12,22 @@ namespace MessagePlatform.Tests
             _following = GetService<Following>();
         }
 
+        private void AddFollowing(string user, string following)
+        {
+            var result = _following.AddFollowing(user, following);
+            result.Should().BeTrue();
+        }
+
         [Fact]
         public void AddFollowing_Success()
         {
-            var result = _following.AddFollowing("myUser", "yourUser");
-            result.Should().BeTrue();
+            AddFollowing("myUser", "yourUser");
         }
 
         [Fact]
         public void GetFollowing_Success()
         {
-            AddFollowing_Success();
+            AddFollowing("myUser", "yourUser");
             var result = _following.GetFollowing("myUser");
             result.Should().NotBeEmpty();
         }
@@ -30,10 +35,21 @@ namespace MessagePlatform.Tests
         [Fact]
         public void GetMultipleFollowing_Success()
         {
-            AddFollowing_Success();
-            AddFollowing_Success();
+            AddFollowing("myUser", "yourUser");
+            AddFollowing("myUser", "yourUser2");
             var result = _following.GetFollowing("myUser");
             result.Count.Should().Be(2);
+        }
+
+        [Fact]
+        public void AddFollowing_Same_User_MultipleTimes_Should_Not_Duplicate_Following()
+        {
+            AddFollowing("myUser", "yourUser");
+            AddFollowing("myUser", "yourUser");
+
+            var result = _following.GetFollowing("myUser");
+
+            result.Count.Should().Be(1);
         }
     }
 }

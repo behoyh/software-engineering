@@ -19,7 +19,7 @@ namespace MessagePlatform.Domains
 
             if (followers == default)
             {
-                followers = new List<string>();
+                followers = new HashSet<string>();
                 followers.Add(following);
                 _cacheHelper.Set(CacheKeys.Following(user), followers);
                 return true;
@@ -28,9 +28,9 @@ namespace MessagePlatform.Domains
             return true;
         }
 
-        public List<string> GetFollowing(string user)
+        public HashSet<string> GetFollowing(string user)
         {
-            return _cacheHelper.Get<List<string>>(CacheKeys.Following(user));
+            return _cacheHelper.Get<HashSet<string>>(CacheKeys.Following(user));
         }
     }
 }
